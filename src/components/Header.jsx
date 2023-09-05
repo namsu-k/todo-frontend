@@ -1,49 +1,74 @@
 import {
+  Avatar,
   Box,
   Button,
   HStack,
   IconButton,
-  useDisclosure,
+  useColorMode,
+  useColorModeValue,
 } from "@chakra-ui/react";
-import { FaCheckToSlot, FaMoon } from "react-icons/fa6";
-import LoginModal from "./LoginModal";
-import SignUpModal from "./SignUpModal";
+import { useQueryClient } from "@tanstack/react-query";
+import React from "react";
+import { FaCheckToSlot, FaMoon, FaSun } from "react-icons/fa6";
+import { Link, useNavigate } from "react-router-dom";
+import useUser from "../lib/useUser";
 
 export default function Header() {
-  const {
-    isOpen: isLoginOpen,
-    onOpen: onLoginOpen,
-    onClose: onLoginClose,
-  } = useDisclosure();
+  const { userLoading, user, isLoggedIn } = useUser();
+  const { colorMode, toggleColorMode } = useColorMode();
+  const logoColor = useColorModeValue("green.500", "green.200");
+  const Icon = useColorModeValue(FaMoon, FaSun);
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
-  const {
-    isOpen: isSignUpOpen,
-    onOpen: onSignUpOpen,
-    onClose: onSignUpClose,
-  } = useDisclosure();
+  const onLoginClick = () => {
+    navigate("/login");
+  };
+
+  const onSignUpClick = () => {
+    navigate("/signup");
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("auth_token");
+    queryClient.invalidateQueries(["me"]);
+  };
   return (
     <HStack
-      py={5}
-      px={10}
+      py={"2%"}
+      px={"4%"}
       borderBottomWidth={1}
-      justifyContent={"space-between"}
+      justifyContent="space-between"
+      w={"100%"}
+      h={"10vh"}
     >
-      <Box color={"green.500"}>
-        <FaCheckToSlot size={48} />
+      <Box color={logoColor}>
+        <Link to="/todos">
+          <FaCheckToSlot size={48} />
+        </Link>
       </Box>
-      <HStack spacing={"2"}>
+      <HStack gap={2}>
+        {isLoggedIn ? (
+          <>
+            <Link to={`/users/me`}>
+              <Avatar name={user?.username} size={"sm"} />
+            </Link>
+            <Button onClick={handleLogout}>Log out</Button>
+          </>
+        ) : (
+          <>
+            <Button onClick={onLoginClick}>Log in</Button>
+            <Button onClick={onSignUpClick} colorScheme="green">
+              Sign up
+            </Button>
+          </>
+        )}
         <IconButton
-          variant={"ghost"}
           aria-label="Toggle dark mode"
-          icon={<FaMoon />}
+          icon={<Icon />}
+          onClick={toggleColorMode}
         />
-        <Button onClick={onLoginOpen}>Log in</Button>
-        <Button onClick={onSignUpOpen} colorScheme="green">
-          Sign up
-        </Button>
       </HStack>
-      <LoginModal isOpen={isLoginOpen} onClose={onLoginClose} />
-      <SignUpModal isOpen={isSignUpOpen} onClose={onSignUpClose} />
     </HStack>
   );
 }
