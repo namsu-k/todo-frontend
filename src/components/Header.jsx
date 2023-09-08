@@ -43,7 +43,7 @@ export default function Header() {
       h={"10vh"}
     >
       <Box color={logoColor}>
-        <Link to="/todos">
+        <Link to="/">
           <FaCheckToSlot size={48} />
         </Link>
       </Box>
@@ -53,6 +53,11 @@ export default function Header() {
             <Link to={`/users/me`}>
               <Avatar name={user?.username} size={"sm"} />
             </Link>
+            <Box>
+              <Link to="/todos">
+                <Button>My Todo</Button>
+              </Link>
+            </Box>
             <Button onClick={handleLogout}>Log out</Button>
           </>
         ) : (

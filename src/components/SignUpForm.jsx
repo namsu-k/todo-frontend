@@ -15,10 +15,10 @@ import { FaEnvelope, FaLock, FaUser, FaUserAstronaut } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { signUp } from "../api";
 
-export default function SignUpForm({ isOpen, onClose }) {
+export default function SignUpForm() {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
   const toast = useToast();
   const signUpMutation = useMutation(signUp, {
     onSuccess: (data) => {
@@ -28,8 +28,8 @@ export default function SignUpForm({ isOpen, onClose }) {
         duration: 3000,
         isClosable: true,
       });
-      queryClient.refetchQueries(["me"]);
-      navigate("/todos");
+      // queryClient.refetchQueries(["me"]);
+      navigate("/login");
     },
     onError: (error) => {
       toast({

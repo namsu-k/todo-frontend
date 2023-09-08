@@ -44,8 +44,10 @@ export default function MyProfile() {
           <Divider />
           <Stack p={4} w={"100%"}>
             <HStack justifyContent={"flex-end"} spacing={4}>
-              <Button>수정</Button>
-              <Button colorScheme="red">삭제</Button>
+              <Button isDisabled>수정</Button>
+              <Button isDisabled colorScheme="red">
+                삭제
+              </Button>
             </HStack>
           </Stack>
         </>

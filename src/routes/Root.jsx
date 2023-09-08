@@ -11,7 +11,7 @@ export default function Root() {
   return (
     <Box w={"100vw"} h={"100vh"}>
       <Header />
-      {isLoading ? <Loading /> : isLoggedIn ? <Outlet /> : <LoginForm />}
+      {isLoading ? <Loading /> : <Outlet />}
     </Box>
   );
 }
